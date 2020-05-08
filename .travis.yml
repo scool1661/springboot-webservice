@@ -32,6 +32,19 @@ deploy:
       acl: private
       local_dir: deploy
       wait-until-deployed: true
+     
+      - provider: codedeploy
+      access_key_id: $AWS_ACCESS_KEY
+      secret_access_key: $ACCESS_SECRET_KEY
+      bucket: a2student7-springboot-webservice
+      key: springboot-webservice.zip
+      bundle_type: zip
+      application: springboot-webservice     # AWS 콘솔에서 등록한 CodeDeploy 애플리케이션
+      deployment_group: springboot-webservice-group             #  CodeDeploy 배포 그룹
+      region: ap-south-1
+      wait-until-deployed: true
+      
+      
        
 notification:
     email:
