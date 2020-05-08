@@ -22,6 +22,23 @@ before_deploy:
     # 압축 파일을 deploy 디렉터리로 이동
     - mv springboot-webservice.zip deploy/springboot-webservice.zip
 
+before_deploy:
+    #- zip -r springboot-webservice *
+    #- mkdir -p deploy
+    #- mv springboot-webservice.zip deploy/springboot-webservice.zip
+    
+    # before-deploy는 배포 파일만 선별
+    - mkdir -p before-deploy
+    - cp scripts/*.sh before-deploy/       # deploy.sh
+    - cp appspec.yml before-deploy/        # apspec.yml - codedeploy 설정
+    - cp build/libs/*.war before-deploy/   # springboot-webservice-xxx.war 
+    
+    - cd before-deploy && zip -r before-deploy *
+    
+    - cd .. && mkdir -p deploy
+    - mv before-deploy/before-deploy.zip deploy/springboot-webservice.zip
+
+
 deploy:
     - provider: s3
       access_key_id: $AWS_ACCESS_KEY
